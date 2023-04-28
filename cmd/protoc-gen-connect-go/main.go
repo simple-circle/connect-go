@@ -64,7 +64,7 @@ const (
 	connectPackage = protogen.GoImportPath("github.com/bufbuild/connect-go")
 
 	generatedFilenameExtension = ".connect.go"
-	generatedPackageSuffix     = "connect"
+	generatedPackageSuffix     = "" // Bazel puts in same package
 
 	usage = "See https://connect.build/docs/go/getting-started to learn how to use this plugin.\n\nFlags:\n  -h, --help\tPrint this help and exit.\n      --version\tPrint the version and exit."
 
@@ -132,7 +132,9 @@ func generate(plugin *protogen.Plugin, file *protogen.File) {
 			string(file.GoPackageName),
 		)),
 	)
-	generatedFile.Import(file.GoImportPath)
+
+	// Don't need since in same package.
+	// generatedFile.Import(file.GoImportPath)
 	generatePreamble(generatedFile, file)
 	generateServiceNameConstants(generatedFile, file.Services)
 	for _, service := range file.Services {
